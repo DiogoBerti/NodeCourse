@@ -26,8 +26,19 @@ request({
   // Transforma o body em um json
   // console.log(JSON.stringify(body.results[0].geometry.location, undefined, 2));
   // Usando ${} - Template string - para mostrar valores... não esquecer o ``
-  console.log(`Address: ${body.results[0].formatted_address}`);
-  console.log(`Latitude: ${body.results[0].geometry.location.lat}`);
-  console.log(`Longitude: ${body.results[0].geometry.location.lng}`);
+  // console.log(`Address: ${body.results[0].formatted_address}`);
+  // console.log(`Latitude: ${body.results[0].geometry.location.lat}`);
+  // console.log(`Longitude: ${body.results[0].geometry.location.lng}`);
+
+  // Tratando Erros da chamada ao google...
+  if(error){
+    console.log('Unable to connect to Host');
+  }else if(body.status != "ZERO_RESULTS"){
+    console.log(`Address: ${body.results[0].formatted_address}`);
+  }else{
+    console.log('Error ocurred');
+  }
+
+
 
 });
