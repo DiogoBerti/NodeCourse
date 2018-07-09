@@ -1,7 +1,26 @@
 const request = require('request');
+const yargs = require('yargs');
+
+// Utilizado para ler argumentos via linha de comando...
+const argv = yargs
+  .options({
+    a: {
+      demand: true,
+      alias: 'address',
+      describe: 'Addres to fetch weather for',
+      string: true
+    }
+})
+  .help()
+  .alias('help', 'h')
+  .argv;
+console.log(argv.a)
+
+address_to_find = encodeURIComponent(argv.a)
+
 
 request({
-  url: 'https://maps.googleapis.com/maps/api/geocode/json?address=Avenida%20Alberto%20Santos%20Dumont%20Osasco',
+  url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address_to_find,
   json: true
 }, (error, response, body) => {
   // Transforma o body em um json
