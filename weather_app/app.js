@@ -3,6 +3,7 @@ const yargs = require('yargs');
 
 // Faz o require da classe do arquivo geocode
 const geocode = require('./geocode/geocode');
+const weather = require('./weather/weather');
 
 // Utilizado para ler argumentos via linha de comando...
 const argv = yargs
@@ -24,11 +25,11 @@ geocode.geocodeAddress(argv.address, (errorMessage, results) => {
       console.log(errorMessage);
     } else {
       console.log(JSON.stringify(results, undefined, 2));
-      geocode.geocodeWeather(results, (errorMessage2, results2) =>{
-        if(errorMessage2){
-          console.log(errorMessage2);
+      weather.getWeather(results, (weatherErrorMessage, weatherResults) =>{
+        if(weatherErrorMessage){
+          console.log(weatherErrorMessage);
         }else{
-          console.log(JSON.stringify(results2, undefined, 2));
+          console.log(JSON.stringify(weatherResults, undefined, 2));
         }
       });
     }
