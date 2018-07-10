@@ -1,6 +1,9 @@
 const request = require('request');
 const yargs = require('yargs');
 
+// Faz o require da classe do arquivo geocode
+const geocode = require('./geocode/geocode');
+
 // Utilizado para ler argumentos via linha de comando...
 const argv = yargs
   .options({
@@ -14,31 +17,21 @@ const argv = yargs
   .help()
   .alias('help', 'h')
   .argv;
-console.log(argv.a)
 
-address_to_find = encodeURIComponent(argv.a)
+//chamando a função do Geocode
+geocode.geocodeAddress(argv.address, (errorMessage, results) => {
+    if (errorMessage) {
+      console.log(errorMessage);
+    } else {
+      console.log(JSON.stringify(results, undefined, 2));
+      geocode.geocodeWeather(results, (errorMessage2, results2) =>{
+        if(errorMessage2){
+          console.log(errorMessage2);
+        }else{
+          console.log(JSON.stringify(results2, undefined, 2));
+        }
+      });
+    }
+  });
 
-
-request({
-  url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address_to_find,
-  json: true
-}, (error, response, body) => {
-  // Transforma o body em um json
-  // console.log(JSON.stringify(body.results[0].geometry.location, undefined, 2));
-  // Usando ${} - Template string - para mostrar valores... não esquecer o ``
-  // console.log(`Address: ${body.results[0].formatted_address}`);
-  // console.log(`Latitude: ${body.results[0].geometry.location.lat}`);
-  // console.log(`Longitude: ${body.results[0].geometry.location.lng}`);
-
-  // Tratando Erros da chamada ao google...
-  if(error){
-    console.log('Unable to connect to Host');
-  }else if(body.status != "ZERO_RESULTS"){
-    console.log(`Address: ${body.results[0].formatted_address}`);
-  }else{
-    console.log('Error ocurred');
-  }
-
-
-
-});
+// 21ae3e2a6c4e38fdbcc1e6d13f58f358
