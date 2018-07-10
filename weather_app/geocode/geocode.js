@@ -28,13 +28,19 @@ var geocodeWeather = (addressObject, callback) => {
     url: url_to_check,
     json: true
   }, (error, response, body) => {
-    if(error){
-      callback('Not Found');
-    }else{
-      // console.log(`Weather Now: ${body.currently.summary}`);
+    // if(error){
+    //   callback('Not Found');
+    // }else if(response.statusCode === 400){
+    //   callback('Api Key is wrong');
+    // }else{
+    //   // console.log(`Weather Now: ${body.currently.summary}`);
+    //   callback(undefined, `Weather Now: ${body.currently.summary}`);
+    // }
+    if(!error && response.statusCode === 200){
       callback(undefined, `Weather Now: ${body.currently.summary}`);
+    }else{
+      callback('Cannot Fetch the Weather');
     }
-
   });
 };
 
