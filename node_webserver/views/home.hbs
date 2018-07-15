@@ -9,7 +9,8 @@
 		<!-- Utilizando as chaves como templates, utilizando valores enviados pelo Node -->
 		<!-- Renderizando via partials.. -->
 		{{> header1}}
-		<p>{{welcomeMessage}}</p>
+		<!-- Chamando o helper screamIt e passando welcomeMessage como argumento.. -->
+		<p>{{screamIt welcomeMessage}}</p>
 		
 		<!-- Injetando um partial, definido dentro de views/partials -->
 		{{> footer}}

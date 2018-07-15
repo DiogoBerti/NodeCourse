@@ -10,20 +10,20 @@ app.set('view engine', 'hbs');
 // Utilizado para apresentar arquivos estaticos pelo server... Utilizando os arquivos da pasta public
 app.use(express.static(__dirname + '/public'));
 
+
+// Registrando Helpers para chamar as funções na page..
+hbs.registerHelper('getCurrentYear',() => {
+	return new Date().getFullYear();
+});
+
+hbs.registerHelper('screamIt', (text) => {
+	return text.toUpperCase();
+});
+
 // Adicionando rotas via url com respostas em Json e Texto..
 app.get('/', (req, res) => {
-	// res.send('<h1>Hello Express</h1>');
-	// res.send({
-	// 	name: 'Diogo',
-	// 	likes: [
-	// 		'Dogs',
-	// 		'Cats',
-	// 		'Guitars'
-	// 	]
-	// });
 	res.render('home.hbs', {
 		pageTitle: 'Home Page Test',
-		currentYear: new Date().getFullYear(),
 		welcomeMessage: 'Welcome to My Website you shithead!'
 	});
 
@@ -33,7 +33,6 @@ app.get('/about', (req, res) =>{
 	// O Primeiro argumento do Render é a page, o segundo é o objeto que será enviado como valores para renderização
 	res.render('about.hbs', {
 		pageTitle: 'About Page Test',
-		currentYear: new Date().getFullYear()
 	});
 	// res.send('<h1>About Page</h1>');
 });
