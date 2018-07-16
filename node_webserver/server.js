@@ -1,15 +1,34 @@
 const express = require('express');
 const hbs = require('hbs');
-
+const fs = require('fs');
 const app = express();
 // Utilizando o Express para criar um server web...
 
 hbs.registerPartials(__dirname + '/views/partials');
 // Chamando o handlebars para dentro do express...
 app.set('view engine', 'hbs');
+// Adicionado middlewares..
+// Esse Middleware cria um log de conexões que printa no console e escreve em um arquivo.
+app.use((req, res, next) => {
+	const now = new Date().toString();
+	const log = `${now}: ${req.method} - ${req.url} = ${req.ip}`;
+	console.log(log);
+	fs.appendFile('server.log', log + '\n', (err) => {
+		if(err){
+			console.log('Unable to Append to server.log');
+		}
+	});
+	// Next é a função que libera o server para prosseguir... se não for chamada, a pagina carrega infinitamente
+	next();
+});
+
+// Middleware de manutenção, bloqueando todas as requisições e jogando para o site de manutenção..
+app.use((req, res, next)=>{
+	res.render('maintenance.hbs',{});
+});
+
 // Utilizado para apresentar arquivos estaticos pelo server... Utilizando os arquivos da pasta public
 app.use(express.static(__dirname + '/public'));
-
 
 // Registrando Helpers para chamar as funções na page..
 hbs.registerHelper('getCurrentYear',() => {
