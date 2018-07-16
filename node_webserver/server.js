@@ -4,6 +4,9 @@ const fs = require('fs');
 const app = express();
 // Utilizando o Express para criar um server web...
 
+// Utilizado para funcionar como heroku
+const port = process.env.PORT || 3000;
+ 
 hbs.registerPartials(__dirname + '/views/partials');
 // Chamando o handlebars para dentro do express...
 app.set('view engine', 'hbs');
@@ -62,7 +65,9 @@ app.get('/bad', (req, res) =>{
 	});
 });
 
+
+
 // O Segundo argumento do Listen é opcional...
-app.listen(3000, () =>{
-	console.log('Server is running on port 3000');
+app.listen(port, () =>{
+	console.log(`Server is running on port ${port}`);
 });
